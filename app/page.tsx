@@ -395,7 +395,7 @@ export default function Page() {
               <Sparkles />
               <h2>Vos tenés la estructura.<br /><span>Yo tengo el motor.</span></h2>
               <p>Los números y la tecnología están listos. ¿Cuándo nos sentamos a afinar los detalles?</p>
-              <a className="button primary button-primary" href="mailto:propuesta@spinofflabs.com">
+              <a className="button primary button-primary" href="https://wa.me/5493512371190" target="_blank" rel="noopener noreferrer">
                 Agendar reunión de inicio <ArrowRight />
               </a>
             </section>
