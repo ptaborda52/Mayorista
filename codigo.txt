@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Descargar Componentes — Propuesta de Negocios</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  pre { max-height: 420px; overflow: auto; }
+  pre::-webkit-scrollbar { width: 8px; height: 8px; }
+  pre::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  .glow-btn:hover { box-shadow: 0 0 28px rgba(34,211,238,.45); }
+</style>
+</head>
+<body class="min-h-screen bg-slate-950 text-white antialiased">
+
+<!-- Fondo decorativo -->
+<div class="fixed inset-0 -z-10 pointer-events-none" style="background: radial-gradient(ellipse at 15% 0%, rgba(34,211,238,.12), transparent 55%), radial-gradient(ellipse at 85% 100%, rgba(168,85,247,.12), transparent 55%), #020617;"></div>
+
+<main class="max-w-5xl mx-auto px-6 py-14">
+
+  <!-- Cabecera -->
+  <header class="mb-12">
+    <div class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.25em] uppercase text-cyan-300/90 bg-cyan-400/10 border border-cyan-400/25 rounded-full px-4 py-1.5 mb-5">
+      <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      Centro de descargas
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3">
+      Tus 3 componentes,{" "}
+      <span class="bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">listos para descargar</span>
+    </h1>
+    <p class="text-white/55 max-w-2xl leading-relaxed">
+      Descarga cada archivo <code class="text-cyan-300">.jsx</code> individualmente, o el paquete completo en ZIP.
+      Luego colócalos en tu carpeta <code class="text-cyan-300">src/components/</code> e instálalos con tus dependencias.
+    </p>
+
+    <!-- Botón ZIP -->
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <button id="btnZip" onclick="downloadZip()"
+        class="glow-btn inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-semibold text-white transition-transform hover:scale-[1.03] active:scale-95"
+        style="background: linear-gradient(135deg, #06b6d4, #8b5cf6); box-shadow: 0 8px 30px -8px rgba(34,211,238,.5);">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v13m0 0l-4-4m4 4l4-4"/></svg>
+        Descargar todo (.zip)
+      </button>
+      <span id="zipStatus" class="text-sm text-white/45"></span>
+    </div>
+  </header>
+
+  <!-- Tarjetas de archivos -->
+  <div id="cards" class="space-y-5"></div>
+
+  <!-- Guía rápida -->
+  <section class="mt-14 rounded-3xl border border-white/10 bg-white/[0.04] p-8 md:p-10" style="backdrop-filter: blur(14px);">
+    <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+      <span class="w-9 h-9 rounded-xl bg-cyan-400/15 border border-cyan-400/30 flex items-center justify-center text-cyan-300 font-mono text-sm">$</span>
+      Instalación rápida en tu proyecto
+    </h2>
+    <ol class="space-y-4 text-sm md:text-base text-white/65">
+      <li class="flex gap-3"><span class="text-cyan-300 font-bold shrink-0">1.</span><span>Copia el ZIP o los archivos a <code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">src/components/</code> de tu app (Next.js, Vite, CRA…).</span></li>
+      <li class="flex gap-3"><span class="text-cyan-300 font-bold shrink-0">2.</span><span>Verifica la dependencia de animación: <code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">npm install framer-motion</code></span></li>
+      <li class="flex gap-3"><span class="text-cyan-300 font-bold shrink-0">3.</span><span>Importa y usa: <code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">import VideoBackground from './components/VideoBackground'</code></span></li>
+      <li class="flex gap-3"><span class="text-cyan-300 font-bold shrink-0">4.</span><span><code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">HandshakeScrollEffect</code> debe ir dentro de una sección <code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">relative</code> y alta (ej. <code class="text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded">min-h-[300vh]</code>).</span></li>
+    </ol>
+  </section>
+</main>
+
+<script>
+/* =====================================================================
+   CÓDIGO FUENTE DE LOS 3 COMPONENTES (se sirven como archivos .jsx)
+   ===================================================================== */
+
+const FILE_VIDEO = `/* ============================================================
+   VideoBackground.jsx
+   ------------------------------------------------------------
+   Fondo cinematográfico con video real en bucle (loop abstracto
+   de datos/tecnología oscura, verificado y libre de derechos,
+   Pexels ID 3129957) + doble capa de contraste para legibilidad.
+   Uso: <VideoBackground /> al inicio del layout raíz.
+   ============================================================ */
+import React from "react";
+
+export default function VideoBackground() {
+  // Video HD verificado (200 OK, video/mp4) — loop abstracto azul de datos
+  const VIDEO_URL =
+    "https://videos.pexels.com/video-files/3129957/3129957-hd_1920_1080_25fps.mp4";
+
+  return (
+    <div className="fixed inset-0 w-full h-full overflow-hidden -z-10 bg-[#020617]">
+      {/* Base degradada visible mientras carga el video (evita flash blanco) */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 20% 10%, rgba(8,47,73,.55), transparent 60%), radial-gradient(ellipse at 80% 90%, rgba(59,7,100,.45), transparent 60%), #020617",
+        }}
+      />
+
+      {/* Video nativo en bucle, silenciado y con reproducción inline */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-90"
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+        Tu navegador no soporta el elemento de video.
+      </video>
+
+      {/* Capa oscura principal: contraste garantizado (bg-black/75) */}
+      <div className="absolute inset-0 bg-black/75 z-[1] pointer-events-none" />
+
+      {/* Viñeteado superior/inferior extra para legibilidad de textos y CTAs */}
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-black/70 via-transparent to-black/85" />
+    </div>
+  );
+}
+`;
+
+const FILE_COMISSION = `/* ============================================================
+   ComissionExplanation.jsx
+   ------------------------------------------------------------
+   Tarjeta Glassmorphism premium que explica el esquema real de
+   comisiones (3% compra + 3% venta) con ejemplo numérico,
+   fórmula visual y justificación de alineación de incentivos.
+   Uso: colocar justo ANTES de la calculadora financiera.
+   ============================================================ */
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function ComissionExplanation() {
+  return (
+    <section className="relative w-full max-w-5xl mx-auto px-6 py-20">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className="relative"
+      >
+        {/* Halo neón exterior difuminado (borde brillante sutil) */}
+        <div
+          className="absolute -inset-1 rounded-[2rem] opacity-60 blur-2xl pointer-events-none"
+          style={{
+            background:
+              "conic-gradient(from 180deg, rgba(34,211,238,.5), rgba(168,85,247,.35), rgba(236,72,153,.4), rgba(34,211,238,.5))",
+          }}
+        />
+
+        {/* Borde fino degradado (1px) que envuelve el cristal */}
+        <div
+          className="absolute inset-0 rounded-[2rem] p-px pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(34,211,238,.6), rgba(255,255,255,.12) 40%, rgba(168,85,247,.55))",
+            WebkitMask:
+              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+          }}
+        />
+
+        {/* ===== Tarjeta de cristal ===== */}
+        <div
+          className="relative rounded-[2rem] overflow-hidden px-8 py-10 md:px-14 md:py-14"
+          style={{
+            backdropFilter: "blur(24px) saturate(140%)",
+            WebkitBackdropFilter: "blur(24px) saturate(140%)",
+            background:
+              "linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03) 55%, rgba(34,211,238,.05))",
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,.15), 0 30px 60px -20px rgba(0,0,0,.7)",
+          }}
+        >
+          {/* Reflejo diagonal sutil tipo vidrio */}
+          <div
+            className="absolute -top-1/2 -left-1/3 w-[70%] h-[140%] rotate-12 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent)",
+            }}
+          />
+
+          {/* Cabecera */}
+          <div className="relative flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] uppercase text-cyan-300/90 bg-cyan-400/10 border border-cyan-400/25 rounded-full px-4 py-1.5 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                Modelo de remuneración
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+                Mi Comisión de Gestión
+              </h2>
+              <p className="text-white/55 mt-3 max-w-xl text-sm md:text-base leading-relaxed">
+                Sin costos ocultos ni fijos: mi honorario existe únicamente
+                cuando el capital se mueve y la mercancía se vende.
+              </p>
+            </div>
+
+            {/* Fórmula visual */}
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="text-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 px-5 py-3">
+                <div className="text-2xl font-bold text-cyan-300">3%</div>
+                <div className="text-[10px] uppercase tracking-wider text-white/50">Compra</div>
+              </div>
+              <span className="text-white/40 text-xl font-light">+</span>
+              <div className="text-center rounded-2xl border border-purple-400/30 bg-purple-400/10 px-5 py-3">
+                <div className="text-2xl font-bold text-purple-300">3%</div>
+                <div className="text-[10px] uppercase tracking-wider text-white/50">Venta</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Detalle de ambas comisiones */}
+          <div className="relative grid md:grid-cols-2 gap-5 mb-8">
+            {/* 3% sobre compra */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 hover:border-cyan-400/40 transition-colors"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-11 h-11 rounded-xl bg-cyan-400/15 border border-cyan-400/25 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-white/40">Al invertir</span>
+              </div>
+              <div className="text-4xl font-bold text-white mb-1">
+                3%<span className="text-cyan-300 text-2xl align-top">s/ compra</span>
+              </div>
+              <p className="text-white/55 text-sm leading-relaxed">
+                Calculado sobre el <span className="text-cyan-200 font-medium">capital invertido</span> en
+                la adquisición del lote o activo.
+              </p>
+            </motion.div>
+
+            {/* 3% sobre venta */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 hover:border-purple-400/40 transition-colors"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-11 h-11 rounded-xl bg-purple-400/15 border border-purple-400/25 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <span className="text-[10px] uppercase tracking-widest text-white/40">Al cerrar</span>
+              </div>
+              <div className="text-4xl font-bold text-white mb-1">
+                3%<span className="text-purple-300 text-2xl align-top">s/ venta</span>
+              </div>
+              <p className="text-white/55 text-sm leading-relaxed">
+                Calculado sobre el <span className="text-purple-200 font-medium">total de la venta generada</span> al
+                liquidar la operación.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Ejemplo numérico realista */}
+          <div className="relative rounded-2xl border border-white/10 bg-black/30 p-6 mb-8 overflow-hidden">
+            <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+            <div className="text-[10px] uppercase tracking-widest text-white/40 mb-4">
+              Ejemplo con un ciclo completo
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4 text-sm">
+              <div>
+                <div className="text-white/50 mb-1">Capital invertido</div>
+                <div className="text-white font-semibold text-lg">$100,000</div>
+                <div className="text-cyan-300/80 text-xs mt-1">→ comisión compra: $3,000</div>
+              </div>
+              <div>
+                <div className="text-white/50 mb-1">Venta generada</div>
+                <div className="text-white font-semibold text-lg">$150,000</div>
+                <div className="text-purple-300/80 text-xs mt-1">→ comisión venta: $4,500</div>
+              </div>
+              <div className="sm:border-l sm:border-white/10 sm:pl-4">
+                <div className="text-white/50 mb-1">Gestión total del ciclo</div>
+                <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-300 font-bold text-lg">
+                  $7,500
+                </div>
+                <div className="text-white/40 text-xs mt-1">Solo si la operación existe y rota.</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Alineación de incentivos */}
+          <div className="relative grid sm:grid-cols-3 gap-4">
+            {[
+              ["Solo gano si tú ganas", "Mi honorario nace del éxito comercial, nunca de tu riesgo."],
+              ["Incentivo a la rotación", "Me motiva comprar bien y vender rápido: capital nunca dormido."],
+              ["Socio, no intermediario", "Trabajo el activo contigo hasta la última venta cerrada."],
+            ].map(([title, desc], idx) => (
+              <div key={idx} className="flex items-start gap-3">
+                <div className="mt-0.5 w-6 h-6 rounded-full bg-gradient-to-br from-cyan-400/30 to-purple-400/30 border border-cyan-300/30 flex items-center justify-center shrink-0">
+                  <svg className="w-3.5 h-3.5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-white font-semibold text-sm mb-1">{title}</div>
+                  <p className="text-white/50 text-xs leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+`;
+
+const FILE_HANDSHAKE = `/* ============================================================
+   HandshakeScrollEffect.jsx
+   ------------------------------------------------------------
+   Efecto cinemático 3D guiado por scroll: dos brazos ejecutivos
+   REALISTAS (fotografía generada con iluminación de borde cian /
+   violeta sobre negro puro, integrados con mix-blend-screen)
+   que convergen desde los extremos hasta sellar el apretón de
+   manos al final de la página.
+
+   INTEGRACIÓN: colócalo DENTRO de una sección alta, ej:
+   <section className="relative min-h-[300vh]">
+     <HandshakeScrollEffect />
+     ...contenido z-10...
+   </section>
+   Nunca intercepta clics (pointer-events-none) y su opacidad
+   máxima es 20% para no competir con textos ni botones.
+   ============================================================ */
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
+// Siluetas fotográficas realistas (fondo negro → se funden con el sitio)
+const LEFT_HAND_IMG =
+  "https://image.qwenlm.ai/public_source/083af497-b72a-4bd1-afcd-503b442119ad/1e6fc290a-94ab-4305-b112-e3f18b6f1754.png";
+const RIGHT_HAND_IMG =
+  "https://image.qwenlm.ai/public_source/083af497-b72a-4bd1-afcd-503b442119ad/11660909d-dafe-4385-a64f-302f6e11a595.png";
+
+export default function HandshakeScrollEffect() {
+  const layerRef = useRef(null);
+
+  // Progreso de scroll sobre toda la sección contenedora
+  const { scrollYProgress } = useScroll({
+    target: layerRef,
+    offset: ["start end", "end end"],
+  });
+
+  // --- Traslación horizontal: de fuera de pantalla al punto de agarre ---
+  const leftX = useTransform(scrollYProgress, [0, 0.9, 1], ["-58vw", "-14vw", "-13vw"]);
+  const rightX = useTransform(scrollYProgress, [0, 0.9, 1], ["58vw", "14vw", "13vw"]);
+
+  // --- Profundidad 3D: rotación en Y que se "aplana" al acercarse ---
+  const leftRotY = useTransform(scrollYProgress, [0, 1], [42, 0]);
+  const rightRotY = useTransform(scrollYProgress, [0, 1], [-42, 0]);
+
+  // --- Inclinación natural del antebrazo que se nivela al sellar ---
+  const leftRotZ = useTransform(scrollYProgress, [0, 1], [-7, 0]);
+  const rightRotZ = useTransform(scrollYProgress, [0, 1], [7, 0]);
+
+  // --- Escala: sensación de cámara que se acerca (dolly-in) ---
+  const handsScale = useTransform(scrollYProgress, [0, 0.6, 1], [0.82, 0.95, 1.04]);
+
+  // --- Micro-rebote vertical al momento del contacto (apretón firme) ---
+  const gripY = useTransform(scrollYProgress, [0, 0.85, 0.93, 1], [60, 0, 6, 0]);
+
+  // --- Opacidad constante y contenida (máx. 20%) ---
+  const layerOpacity = 0.2;
+
+  // --- Resplandor que nace exactamente cuando las manos se sellan ---
+  const glowOpacity = useTransform(scrollYProgress, [0.8, 1], [0, 0.9]);
+  const glowScale = useTransform(scrollYProgress, [0.8, 1], [0.4, 1.6]);
+
+  // --- Anillo de "acuerdo sellado" ---
+  const ringScale = useTransform(scrollYProgress, [0.88, 1], [0.2, 2.2]);
+  const ringOpacity = useTransform(scrollYProgress, [0.88, 0.96, 1], [0, 0.7, 0]);
+
+  return (
+    <div
+      ref={layerRef}
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0"
+    >
+      {/* Escena con perspectiva para el efecto tridimensional */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ opacity: layerOpacity, perspective: 1200 }}
+      >
+        {/* Brazo izquierdo (luz cian) */}
+        <motion.img
+          src={LEFT_HAND_IMG}
+          alt=""
+          draggable={false}
+          className="absolute w-[72vw] md:w-[44vw] max-w-[620px] select-none mix-blend-screen"
+          style={{
+            x: leftX,
+            y: gripY,
+            rotateY: leftRotY,
+            rotate: leftRotZ,
+            scale: handsScale,
+            filter: "drop-shadow(0 0 30px rgba(34,211,238,.35))",
+          }}
+        />
+
+        {/* Brazo derecho (luz violeta) */}
+        <motion.img
+          src={RIGHT_HAND_IMG}
+          alt=""
+          draggable={false}
+          className="absolute w-[72vw] md:w-[44vw] max-w-[620px] select-none mix-blend-screen"
+          style={{
+            x: rightX,
+            y: gripY,
+            rotateY: rightRotY,
+            rotate: rightRotZ,
+            scale: handsScale,
+            filter: "drop-shadow(0 0 30px rgba(168,85,247,.35))",
+          }}
+        />
+
+        {/* Resplandor central del apretón */}
+        <motion.div
+          className="absolute w-[26rem] h-[26rem] rounded-full blur-3xl"
+          style={{
+            opacity: glowOpacity,
+            scale: glowScale,
+            background:
+              "radial-gradient(circle, rgba(34,211,238,.5), rgba(168,85,247,.35) 55%, transparent 75%)",
+          }}
+        />
+
+        {/* Onda expansiva al sellar el acuerdo */}
+        <motion.div
+          className="absolute w-72 h-72 rounded-full border border-cyan-300/60"
+          style={{ opacity: ringOpacity, scale: ringScale }}
+        />
+      </div>
+    </div>
+  );
+}
+`;
+
+/* =====================================================================
+   LÓGICA DE DESCARGA
+   ===================================================================== */
+const COMPONENTS = [
+  {
+    name: "VideoBackground.jsx",
+    code: FILE_VIDEO,
+    accent: "#22d3ee",
+    desc: "Fondo de video en bucle con capa oscura de contraste.",
+    tag: "Video · Fondo fijo",
+  },
+  {
+    name: "ComissionExplanation.jsx",
+    code: FILE_COMISSION,
+    accent: "#a855f7",
+    desc: "Tarjeta Glassmorphism del esquema 3% + 3% con ejemplo numérico.",
+    tag: "Glassmorphism · UI",
+  },
+  {
+    name: "HandshakeScrollEffect.jsx",
+    code: FILE_HANDSHAKE,
+    accent: "#ec4899",
+    desc: "Apretón de manos 3D cinemático guiado por scroll (Framer Motion).",
+    tag: "Scroll · Framer Motion",
+  },
+];
+
+// Renderizado dinámico de tarjetas
+const cardsEl = document.getElementById("cards");
+COMPONENTS.forEach((c, i) => {
+  const kb = (new Blob([c.code]).size / 1024).toFixed(1);
+  const lines = c.code.split("\n").length;
+  const card = document.createElement("article");
+  card.className = "group relative rounded-3xl border border-white/10 bg-white/[0.04] p-6 md:p-7 transition-colors hover:border-white/20";
+  card.style.backdropFilter = "blur(12px)";
+  card.innerHTML =
+    '<div class="flex flex-col md:flex-row md:items-center gap-5">' +
+      '<div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border" style="background:' + c.accent + '1a;border-color:' + c.accent + '44">' +
+        '<svg class="w-6 h-6" style="color:' + c.accent + '" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' +
+      '</div>' +
+      '<div class="flex-1 min-w-0">' +
+        '<div class="flex flex-wrap items-center gap-3 mb-1">' +
+          '<h3 class="font-mono font-semibold text-white text-lg">' + c.name + '</h3>' +
+          '<span class="text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full border" style="color:' + c.accent + ';border-color:' + c.accent + '55;background:' + c.accent + '14">' + c.tag + '</span>' +
+        '</div>' +
+        '<p class="text-white/50 text-sm">' + c.desc + '</p>' +
+        '<div class="text-white/30 text-xs mt-1.5 font-mono">' + kb + ' KB · ' + lines + ' líneas · React JSX</div>' +
+      '</div>' +
+      '<div class="flex flex-wrap items-center gap-2.5 shrink-0">' +
+        '<button onclick="toggleCode(' + i + ')" id="tg-' + i + '" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-white/15 text-white/70 hover:bg-white/10 transition-colors">Ver código</button>' +
+        '<button onclick="copyCode(' + i + ')" id="cp-' + i + '" class="px-4 py-2.5 rounded-xl text-sm font-medium border border-white/15 text-white/70 hover:bg-white/10 transition-colors">Copiar</button>' +
+        '<button onclick="downloadFile(\'' + c.name + '\',' + i + ')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-transform hover:scale-105 active:scale-95" style="background:linear-gradient(135deg,' + c.accent + 'cc,' + c.accent + '88);box-shadow:0 6px 20px -8px ' + c.accent + '99">Descargar</button>' +
+      '</div>' +
+    '</div>' +
+    '<pre id="code-' + i + '" class="hidden mt-6 rounded-2xl bg-black/50 border border-white/10 p-5 text-xs leading-relaxed text-cyan-100/90 font-mono whitespace-pre"></pre>';
+  cardsEl.appendChild(card);
+});
+
+// Volcado seguro del código (textContent evita inyección de HTML)
+COMPONENTS.forEach((c, i) => {
+  document.getElementById("code-" + i).textContent = c.code;
+});
+
+/* --- Descargar un archivo individual --- */
+function downloadFile(filename, idx) {
+  const blob = new Blob([COMPONENTS[idx].code], { type: "text/javascript;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+/* --- Descargar ZIP con los 3 componentes --- */
+function downloadZip() {
+  const status = document.getElementById("zipStatus");
+  status.textContent = "Generando componentes.zip…";
+  const zip = new JSZip();
+  const folder = zip.folder("components");
+  COMPONENTS.forEach((c) => folder.file(c.name, c.code));
+  folder.file("README.md",
+    "# Componentes — Propuesta de Negocios\n\n" +
+    "1. Copia esta carpeta a src/components/\n" +
+    "2. npm install framer-motion\n" +
+    "3. HandshakeScrollEffect: úsalo dentro de una sección relative min-h-[300vh]\n");
+  zip.generateAsync({ type: "blob" }).then((blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "componentes-propuesta.zip";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => { URL.revokeObjectURL(url); status.textContent = ""; }, 1500);
+    status.textContent = "✓ ZIP descargado correctamente";
+  });
+}
+
+/* --- Alternar vista de código --- */
+function toggleCode(i) {
+  const pre = document.getElementById("code-" + i);
+  const btn = document.getElementById("tg-" + i);
+  const open = pre.classList.toggle("hidden");
+  btn.textContent = open ? "Ver código" : "Ocultar código";
+}
+
+/* --- Copiar al portapapeles con feedback --- */
+function copyCode(i) {
+  const btn = document.getElementById("cp-" + i);
+  navigator.clipboard.writeText(COMPONENTS[i].code).then(() => {
+    btn.textContent = "✓ Copiado";
+    btn.classList.add("text-emerald-300", "border-emerald-400/40");
+    setTimeout(() => {
+      btn.textContent = "Copiar";
+      btn.classList.remove("text-emerald-300", "border-emerald-400/40");
+    }, 1600);
+  });
+}
+</script>
+</body>
+</html>

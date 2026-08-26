@@ -1,0 +1,9 @@
+minimumReleaseAge: 0
+
+allowBuilds:
+  msw: true
+  esbuild: true
+  '@swc/core': true
+
+overrides:
+  hono: 4.12.25
